@@ -61,18 +61,18 @@ You should try to follow the milestones but the order is not important (though
 some milestones are dependent on others).
 
 
-[conda]: (https://docs.conda.io/en/latest/)
-[mamba]: (https://mamba.readthedocs.io/en/latest/)
-[pipenv]: (https://pipenv.pypa.io/en/latest/)
-[miniconda]: (https://docs.conda.io/en/latest/miniconda.html)
-[placozoa]: https://en.wikipedia.org/wiki/Placozoa
-[pip]: https://pypi.org/project/pip/
-[numpy]: https://numpy.org/
-[scipy]: https://scipy.org/
-[matplotlib]: https://matplotlib.org/
-[scikit-image]: https://scikit-image.org/
-[scikit-learn]: https://scikit-learn.org/
-[tifffile]: https://pypi.org/project/tifffile/
-[ipython]: https://ipython.org/
-[jupyter]: https://jupyter.org/
-[napari]: https://napari.org/
+[conda]: https://docs.conda.io/en/latest/
+[mamba]: https://mamba.readthedocs.io/en/latest/
+[pipenv]: https://pipenv.pypa.io/en/latest/
+[miniconda]: https://docs.conda.io/en/latest/miniconda.html
+[placozoa]: https://en.wikipedia.org/wiki/Placozo
+[pip]: https://pypi.org/project/pip
+[numpy]: https://numpy.org
+[scipy]: https://scipy.org
+[matplotlib]: https://matplotlib.org
+[scikit-image]: https://scikit-image.org
+[scikit-learn]: https://scikit-learn.org
+[tifffile]: https://pypi.org/project/tifffile
+[ipython]: https://ipython.org
+[jupyter]: https://jupyter.org
+[napari]: https://napari.org
