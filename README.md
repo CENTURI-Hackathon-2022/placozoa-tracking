@@ -22,8 +22,8 @@ to be able to better see the error messages.
 
 ## Installing the dependencies
 
-Once conda is installed (or your favorite environement manager), you can create
-and activate your environement:
+Once conda is installed (or your favorite environment manager), you can create
+and activate your environment:
 ```shell
 conda create -n placozoa
 conda activate placozoa
@@ -31,7 +31,7 @@ conda activate placozoa
 
 Then, there is a `setup.py` file with the basic dependencies present within this
 repository. It means that you can easily install all the likely necessary
-dependecies using [pip]. It might be necessary to install it first:
+dependencies using [pip]. It might be necessary to install it first:
 ```shell
 conda install pip
 ```
@@ -42,14 +42,14 @@ folder the following way:
 pip install .
 ```
 
-### List of dependecies:
+### List of dependencies:
 Here is the list of dependencies that will be installed:
 - [numpy] : basic library for array manipulation
 - [matplotlib] : basic library to plot figures
 - [scipy] : one of the basic libraries for image analysis (`ndimage`)
 - [scikit-image] : one of the basic libraries for image analysis
 - [scikit-learn] : one of the basic libraries for data analysis
-- [tifffile] : library to read and write tif images
+- [tifffile] : library to read and write tiff images
 - [ipython] : interactive python terminal
 - [jupyter] : python notebook
 - [napari] : 3D image visualizer
