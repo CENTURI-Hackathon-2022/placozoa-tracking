@@ -55,7 +55,24 @@ Here is the list of dependencies that will be installed:
 - [napari] : 3D image visualizer
 
 # Road Map
-You can find the roadmap for the project [there](https://github.com/CENTURI-Hackathon-2022/placozoan-visualisation/issues/1).
+
+# Problems that this software is trying to solve
+Understanding better Placozoans wound healing
+
+# Milestones
+The milestones are likely in order of difficulty but they can be done in any.
+
+It is not expected, whatsoever, for all the milestones to be completed.
+
+- Detecting and tracking the placozoan throughout the whole movie
+- Quantitatively characterising the shape of the placozoan over time
+- Detecting and tracking the wound throughout the whole movie
+- Quantitatively characterising the shape of the wound over time
+- Building a napari plugin for the detection and tracking
+- Computing and quantifying the cell flows within the placozoan
+- Putting in relation placozoan and wound shape with cell flows
+
+You can find the roadmap for the project as an issue [there](https://github.com/CENTURI-Hackathon-2022/placozoan-visualisation/issues/1).
 
 You should try to follow the milestones but the order is not important (though
 some milestones are dependent on others).
