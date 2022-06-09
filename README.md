@@ -59,24 +59,43 @@ Here is the list of dependencies that will be installed:
 # Problems that this software is trying to solve
 Understanding better Placozoans wound healing
 
-# Milestones
-The milestones are likely in order of difficulty but they can be done in any.
+# Objectives
+The objectives are likely in order of difficulty but they can be done in any.
 
-It is not expected, whatsoever, for all the milestones to be completed.
+It is not expected, whatsoever, for all the objectives to be completed.
 
-- Detecting and tracking the placozoan throughout the whole movie
-- Quantitatively characterising the shape of the placozoan over time
-- Detecting and tracking the wound throughout the whole movie
-- Quantitatively characterising the shape of the wound over time
-- Building a napari plugin for the detection and tracking
-- Computing and quantifying the cell flows within the placozoan
-- Putting in relation placozoan and wound shape with cell flows
+- Detecting and tracking the placozoan throughout the whole movie #2
+- Quantitatively characterising the shape of the placozoan over time #3
+- Detecting and tracking the wound throughout the whole movie #4
+- Quantitatively characterising the shape of the wound over time #5
+- Building a napari plugin for the detection and tracking #6
+- Computing and quantifying the cell flows within the placozoan #7
+- Putting in relation placozoan and wound shape with cell flows #8
 
 You can find the roadmap for the project as an issue [there](https://github.com/CENTURI-Hackathon-2022/placozoan-visualisation/issues/1).
 
-You should try to follow the milestones but the order is not important (though
+You should try to follow the objectives but the order is not important (though
 some milestones are dependent on others).
 
+## Objective dependencies
+&rarr; #2 
+
+&rarr; #4 
+
+#2 &rarr; #3 
+
+#4 &rarr; #5
+
+#2 | #4 &rarr; #6
+
+&rarr; #7 
+
+(#3 | #4) & #7 &rarr; #8
+
+Legend:
+- #x &rarr; #y: #x needs to be completed before #y can be started
+- #x | #y: #x __or__ #y needs to be completed
+- #x & #y: #x __and__ #y needs to be completed
 
 [conda]: https://docs.conda.io/en/latest/
 [mamba]: https://mamba.readthedocs.io/en/latest/
