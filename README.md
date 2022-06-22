@@ -101,7 +101,7 @@ Legend:
 [mamba]: https://mamba.readthedocs.io/en/latest/
 [pipenv]: https://pipenv.pypa.io/en/latest/
 [miniconda]: https://docs.conda.io/en/latest/miniconda.html
-[placozoa]: https://en.wikipedia.org/wiki/Placozo
+[placozoa]: https://en.wikipedia.org/wiki/Placozoa
 [pip]: https://pypi.org/project/pip
 [numpy]: https://numpy.org
 [scipy]: https://scipy.org
