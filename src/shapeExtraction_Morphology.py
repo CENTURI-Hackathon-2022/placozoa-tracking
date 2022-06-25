@@ -8,10 +8,10 @@ from pathlib import Path
 
 
 
-def shapeExtraction(path, smoothingSigma = 4, minRemoveSize = 10000, removeHoleSize = 5000):
+def shapeExtraction(filePath, smoothingSigma = 4, minRemoveSize = 10000, removeHoleSize = 5000):
     
     # Define path to the .tiff file and reading the image
-    path = ""
+    path = Path(filePath)
     im = imread(path)
 
 
