@@ -7,5 +7,5 @@ output:
   axes: "TYX" # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
   rearrange_pattern: None # please read the einops documentation
 chanvese:
-  disk_size: 4
-  iteration_nb: 10
+  disk_size: 4 #neighbourhood size for the minimum filter
+  iteration_nb: 10 #https://github.com/pmneila/morphsnakes
