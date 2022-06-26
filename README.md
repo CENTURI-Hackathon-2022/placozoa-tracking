@@ -97,6 +97,10 @@ Legend:
 - #x | #y: #x __or__ #y needs to be completed
 - #x & #y: #x __and__ #y needs to be completed
 
+## License
+This pipeline is under an open-source license **BY-NC** (can be reused, modified, for no commercial purpose, with attribution of the authors when used for publication). **Code Authors: Alice Gros, Clément Caporal, Gesa Loof, Amirhossein Esmaeili, Dominika Guttenova, Louise Dagher**
+
+
 # Tutorial  
   
 ![IMG_0003](https://user-images.githubusercontent.com/15125196/175807730-910af1fc-75f0-4b17-9391-e628a45ed529.PNG)  
