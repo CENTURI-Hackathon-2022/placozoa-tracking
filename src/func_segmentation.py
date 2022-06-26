@@ -1,101 +1,17 @@
-from tifffile import imread, imwrite
-import scipy.ndimage as nd
-from pathlib import Path
-from skimage.morphology import disk
-import numpy as np
-import morphsnakes as ms
-from scipy.ndimage.morphology import binary_fill_holes
-from skimage.morphology import remove_small_objects, remove_small_holes
-from skimage.filters import rank
-from yapic.session import Session
-
-from typing import Any, Dict, List, Iterator, Optional, Sequence, Union, Callable
-from numpy.typing import ArrayLike
-
-import abc
-from src.utils import load_tiff, save_tiff
 import os
+from pathlib import Path
 
-
-class Repr:
-    '''Evaluable string representation of an object'''
-
-    def __repr__(self): return f'{self.__class__.__name__}: {self.__dict__}'
-
-
-class FunctionWrapperSingle(Repr):
-    '''A function wrapper that returns a partial for input only.'''
-
-    def __init__(self, function: Callable, *args, **kwargs):
-        from functools import partial
-        self.function = partial(function, *args, **kwargs)
-
-    def __call__(self, inp: np.ndarray): return self.function(inp)
-
-class Compose:
-    '''Baseclass - composes several transforms together.'''
-
-    def __init__(self, transforms: List[Callable]):
-        self.transforms = transforms
-
-    def __repr__(self): return str([transform for transform in self.transforms])
-
-# transforms = ComposeDouble([
-#     FunctionWrapperDouble(create_dense_target, input=False, target=True),
-#     FunctionWrapperDouble(np.moveaxis, input=True, target=False, source=-1, destination=0),
-#     FunctionWrapperDouble(normalize_01)
-# ])
-
-
-
-
-class ComposeDouble(Compose):
-    '''Composes transforms for input-target pairs.'''
-
-    def __call__(self, inp: np.ndarray, target: dict):
-        for t in self.transforms:
-            inp, target = t(inp, target)
-        return inp, target
-
-
-def create_dense_target(tar: np.ndarray):
-    classes = np.unique(tar)
-    dummy = np.zeros_like(tar)
-    for idx, value in enumerate(classes):
-        mask = np.where(tar == value)
-        dummy[mask] = idx
-
-    return dummy
-
-
-class Method():
-
-    @classmethod
-    @property
-    @abc.abstractmethod
-    def segment(self):  # required
-        '''Assign acroym for a subclass dataset'''
-        ...
-
-    @property
-    @abc.abstractmethod
-    def input_paths(self):  # required
-        '''Path to input files'''
-        ...
-
-    @property
-    @abc.abstractmethod
-    def output_paths(self):  # required
-        '''Path to output files'''
-        ...
-
-class SegmentationMethod(Method):
-
-    @property
-    def output_paths(self):
-        return
-
-
+import morphsnakes as ms
+import numpy as np
+import scipy.ndimage as nd
+from numpy.typing import ArrayLike
+from scipy import ndimage as ndi
+from scipy.ndimage.morphology import binary_fill_holes
+from skimage import exposure, filters, morphology
+from skimage.filters import rank
+from skimage.morphology import disk, remove_small_holes, remove_small_objects
+from tifffile import imread, imwrite
+from yapic.session import Session
 
 def segmentation_chanvese(image:ArrayLike,
                         disk_size:int=4,
@@ -172,5 +88,42 @@ def segmentation_yapic(im:ArrayLike,
         mask_t = remove_small_objects(mask_t, small_object_th)
         mask_t = remove_small_holes(mask_t, small_holes_th)
         mask[i:i+1] = mask_t
+
+    return mask
+
+def segmentation_otsu(im:ArrayLike,
+                    smoothingSigma:int=4,
+                    minRemoveSize:int=10000,
+                    removeHoleSize:int=5000,
+                    disk_footprint:int=1) -> ArrayLike:
+
+    # Preallocating mask array
+    footprint = morphology.footprints.disk(disk_footprint)
+    mask = np.zeros(np.shape(im), dtype=bool)
+
+    # Looping over the frames and
+    for frame in np.arange(im.shape[0]):
+
+        # Load each frame & automatically adjust contrast
+        image = im[frame,...]
+        image = exposure.equalize_hist(image)
+        image =  exposure.rescale_intensity(image)
+
+        # Use white_tophat and gaussian filter on the frame
+        image = morphology.white_tophat(image, footprint)
+        image = filters.gaussian(image, sigma = smoothingSigma)
+
+        # Threshold the result & label each detected region
+        thresholds = filters.threshold_multiotsu(image)
+        regions = np.digitize(image, bins=thresholds)
+        label_image = regions
+
+        # Fill the holes in the cell morphology and remove small objects/holes from the background
+        fill = ndi.binary_fill_holes(label_image)
+
+        mask[frame,...] = morphology.remove_small_holes(
+            morphology.remove_small_objects(
+                fill, min_size=minRemoveSize),
+            removeHoleSize)
 
     return mask
