@@ -97,6 +97,32 @@ Legend:
 - #x | #y: #x __or__ #y needs to be completed
 - #x & #y: #x __and__ #y needs to be completed
 
+# Tutorial  
+  
+![IMG_0003](https://user-images.githubusercontent.com/15125196/175807730-910af1fc-75f0-4b17-9391-e628a45ed529.PNG)  
+
+
+The following analysis have been developed: 
+- **Shape segmentation (contouring the Trichoplax shape or its ablation wound shape):** 3 differents strategies have been investigated. They require the original movie as tif as input. They generate a tif file of the segmented shape (= binary mask).  
+    1) A deep learning model has been trained on hand-made labelled bright-field trichoplax movie. The needed input file is a tif file with one channel correspond to the bright-field channel and one channel to the labels (Layer 1, the Trichoplax, Layer 2, the background). This kind of labelling can be done in Napari, before starting the training.
+    2) Otsu's method: The code performs automatic thresholding to separate pixels into two classes of  foreground & background. This threshold is determined by by maximizing inter-class variance. A suitable candidate for creating shape masks of microscopic images of cells 
+    3) Segmentation using morphsnakes: Finding outer edge of the animal using the morphsnakes algorithm for contour finding by comparing intensity averages inside and outside of a region.
+
+
+- **Preprocessing of the wound:** This code extract the wound shape from the Trichoplax mask (given as tif input) and generates a new tif mask only for the wound.
+/!\ Running this part is necessary before doing the shape features analysis for the wound. 
+
+- **Shape features analysis:** This code analyzes the object mask (either the Trichoplax or its wound) and compute shape features. Some of the features are computed from the region props Python module: you have to specify them in the 'props' list. Others can be added in the func_features.py, or new cell in the notebook. The output is a dataframe containing all the properties, saved as csv.  
+/!\ This part needs to be run twice if you want to analyse the Trichoplax shape and its wound shape; **Don't forget to change mask filename input and dataframe name output ;)**
+
+- **Plot generated shape data:** load the two previous csv files (Trichoplax and wound dataframes). It generates examples of analysis: area overtime, convexity, eccentricity, orientation angle, ... 
+
+- **Investigate flows within the Trichoplax: To understand the collective cell movements after laser ablation.**  
+This code generates the velocity fields of pixels within the Trichoplax, from the global displacement of pixels between one timepoint to another. The wanted time window for the analysis (delta t), as well as the index of starting timepoint, the raw image name, folder for saving, should be specified as input. The output is a sequence of png images, that you can afterwhat load in FIJI and convert to gif file. This code could be improved by saving the coordinates of the vectors.  
+![optical_flowoptical_flow_t50to_t55](https://user-images.githubusercontent.com/15125196/175806591-811e2830-d9a7-4d44-b405-787c8510210f.png)  
+
+- **Tracking of Trichoplax lipid-containing cells:** 
+
 [conda]: https://docs.conda.io/en/latest/
 [mamba]: https://mamba.readthedocs.io/en/latest/
 [pipenv]: https://pipenv.pypa.io/en/latest/
