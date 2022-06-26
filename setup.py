@@ -31,5 +31,5 @@ setup(
     install_requires=['scipy', 'numpy', 'matplotlib',
                       'scikit-image', 'scikit-learn',
                       'tifffile', 'ipython', 'jupyter',
-                      'napari', 'morphsnakes'],
+                      'napari', 'morphsnakes', 'einops'],
 )
