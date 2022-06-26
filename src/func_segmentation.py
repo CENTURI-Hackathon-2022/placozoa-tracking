@@ -145,8 +145,8 @@ def segmentation_otsu(im:ArrayLike,
 
         mask[frame,...] = morphology.remove_small_holes(
             morphology.remove_small_objects(
-                fill, min_size=minRemoveSize,
-            removeHoleSize))
+                fill, min_size=minRemoveSize),
+            removeHoleSize)
 
     return mask
 
