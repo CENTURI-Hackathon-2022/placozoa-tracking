@@ -1,0 +1,8 @@
+input:
+  path: '../data/labeled_wound.tif' # where the output will be loaded
+  axes: 'TYX' # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
+  rearrange_pattern: None # please read the einops documentation
+output:
+  path: '../data/results/wound_mask.tif' # where the output will be saved
+  axes: 'TYX' # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
+  rearrange_pattern: None # please read the einops documentation

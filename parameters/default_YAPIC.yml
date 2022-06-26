@@ -1,0 +1,14 @@
+input:
+  path: '../data/placozoan-movie.tif' # where the output will be loaded
+  axes: 'TYX' # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
+  rearrange_pattern: None # please read the einops documentation
+output:
+  path: '../data/results/placozoan-movie_masked.tif' # where the output will be saved
+  axes: 'TYX' # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
+  rearrange_pattern: None # please read the einops documentation
+yapic:
+  temp_folder_path: '../data/temp/'
+  model_path: '../models/model.h5'
+  small_object_th: 1000 # in pixel remove object smaller than the threshold
+  small_holes_th: 200 # in pixel fill holes smaller than the threshold
+  prediction_th: 0.2 # th probability for the pixel to be a placozoa

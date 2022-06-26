@@ -1,0 +1,13 @@
+input:
+  path: '../data/placozoan-movie.tif' # where the output will be loaded
+  axes: 'TYX' # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
+  rearrange_pattern: None # please read the einops documentation
+output:
+  path: '../data/results/placozoan-movie_masked.tif' # where the output will be saved
+  axes: 'TYX' # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
+  rearrange_pattern: None # please read the einops documentation
+otsu:
+  smoothingSigma: 4
+  minRemoveSize: 10000 # in pixel remove object smaller than the threshold
+  removeHoleSize: 5000 # in pixel fill holes smaller than the threshold
+  disk_footprint: 1
