@@ -4,7 +4,7 @@ from pathlib import Path
 import abc
 import numpy as np
 
-from src.func_segmentation import segmentation_chanvese
+from src.func_segmentation import segmentation_chanvese, segmentation_yapic
 
 class SegmentationInterface(metaclass=abc.ABCMeta):
 
@@ -54,4 +54,13 @@ class ChanVese(SegmentationInterface):
         input = np.array(input) if input else self.input
         params = params if params else self.params
         self.output = segmentation_chanvese(input, **params)
+        return self.output
+
+class YAPIC(SegmentationInterface):
+
+    def get_segmentation(self, input:Optional[ArrayLike]=None,
+                    params:Optional[Dict[str, Any]]=None):
+        input = np.array(input) if input else self.input
+        params = params if params else self.params
+        self.output = segmentation_yapic(input, **params)
         return self.output

@@ -13,16 +13,18 @@ from typing import Any, Dict, List, Iterator, Optional, Sequence, Union, Callabl
 from numpy.typing import ArrayLike
 
 import abc
+from src.utils import load_tiff, save_tiff
+import os
 
 
 class Repr:
-    """Evaluable string representation of an object"""
+    '''Evaluable string representation of an object'''
 
     def __repr__(self): return f'{self.__class__.__name__}: {self.__dict__}'
 
 
 class FunctionWrapperSingle(Repr):
-    """A function wrapper that returns a partial for input only."""
+    '''A function wrapper that returns a partial for input only.'''
 
     def __init__(self, function: Callable, *args, **kwargs):
         from functools import partial
@@ -31,7 +33,7 @@ class FunctionWrapperSingle(Repr):
     def __call__(self, inp: np.ndarray): return self.function(inp)
 
 class Compose:
-    """Baseclass - composes several transforms together."""
+    '''Baseclass - composes several transforms together.'''
 
     def __init__(self, transforms: List[Callable]):
         self.transforms = transforms
@@ -48,7 +50,7 @@ class Compose:
 
 
 class ComposeDouble(Compose):
-    """Composes transforms for input-target pairs."""
+    '''Composes transforms for input-target pairs.'''
 
     def __call__(self, inp: np.ndarray, target: dict):
         for t in self.transforms:
@@ -72,19 +74,19 @@ class Method():
     @property
     @abc.abstractmethod
     def segment(self):  # required
-        """Assign acroym for a subclass dataset"""
+        '''Assign acroym for a subclass dataset'''
         ...
 
     @property
     @abc.abstractmethod
     def input_paths(self):  # required
-        """Path to input files"""
+        '''Path to input files'''
         ...
 
     @property
     @abc.abstractmethod
     def output_paths(self):  # required
-        """Path to output files"""
+        '''Path to output files'''
         ...
 
 class SegmentationMethod(Method):
@@ -97,7 +99,7 @@ class SegmentationMethod(Method):
 
 def segmentation_chanvese(image:ArrayLike,
                         disk_size:int=4,
-                        iteration_nb:int=10):
+                        iteration_nb:int=10) -> ArrayLike:
     image = np.array(image)
 
     output_array = np.zeros(image.shape, dtype = bool)
@@ -136,33 +138,39 @@ def segmentation_chanvese(image:ArrayLike,
 
     return output_array
 
-def yapic_wrapper(path_in, path_out):
+def segmentation_yapic(im:ArrayLike,
+                    temp_folder_path:str,
+                    model_path:Path,
+                    small_object_th:int=1000,
+                    small_holes_th:int=200,
+                    prediction_th:float=0.2,
+                    show_debug:bool=True) -> ArrayLike:
+    temp_folder_path = Path(temp_folder_path)
+    if not os.path.isdir(temp_folder_path/'input'):
+        os.mkdir(temp_folder_path/'input')
+    if not os.path.isdir(temp_folder_path/'predict'):
+        os.mkdir(temp_folder_path/'predict')
 
-    path_raw = Path('../data/placozoan-movie.tif')
-    path_result = Path('../data/placozoan-movie_mask_yapic.tif')
-    path_temp = '../data/yapic_data/temp_yapic.tif'
-    path_temp_mask = '../data/'
+    mask = np.zeros(im.shape, dtype=bool)
 
-    img = imread(path_raw)
+    for i, im in enumerate(im):
+        if show_debug:
+            print(f'Writing temp tif {i}/{len(im)}')
+        # create individual tif for each step
+        imwrite(temp_folder_path/f'input/temp.tif', im)
 
-    # load keras model
-
-    mask = np.zeros(img.shape, dtype=bool)
-
-    # create individual tif for each step
-    for i, im in enumerate(img):
-        print(f'{i}/{len(img)}', end=", ")
-        imwrite(path_temp, im)
+        # predict the temp tif
         t = Session()
-        t.load_prediction_data(path_temp, path_temp_mask)
-        t.load_model('../models/model.h5')
+        t.load_prediction_data(str(temp_folder_path / f'input/temp.tif'),
+                            str(temp_folder_path / f'predict/'))
+        t.load_model(model_path)
         t.predict()
-        mask_t = np.squeeze(imread(path_temp_mask+"temp_yapic_class_1.tif"))
-        mask_t = remove_small_objects(mask_t, 1000)
-        mask_t = remove_small_holes(mask_t, 200)
-        mask[i:i+1] = mask_t > 0.2
 
-    imwrite(path_result, mask)
-
+        # read the prediction and store it
+        mask_t = np.squeeze(imread(str(temp_folder_path/'predict/temp_class_1.tif')))
+        mask_t = mask_t > prediction_th
+        mask_t = remove_small_objects(mask_t, small_object_th)
+        mask_t = remove_small_holes(mask_t, small_holes_th)
+        mask[i:i+1] = mask_t
 
     return mask
