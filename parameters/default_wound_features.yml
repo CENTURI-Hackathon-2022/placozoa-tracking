@@ -1,0 +1,17 @@
+input:
+  # Indicate the original image name, the mask name (tif files that are normally in the "data" folder).
+  mask_path: '../data/final_mask_wound.tif' # where the input will be loaded
+  intensity_path: '../data/placozoan-movie.tif' # where the input will be loaded
+  axes: 'TYX' # the axis order in the input (for exemple 'TCYX' means (time, channel, y, x))
+  rearrange_pattern: None # please read the einops documentation
+output:
+  # Indicate the name of the csv file, that will correspond to the final table with the analyzed data.
+  path: '../data/features_wound.csv' # where the output will be saved
+  rearrange_pattern: None # please read the einops documentation
+features:
+  # Choose the properties you would like to extract from the binary mask (= segmentation):
+  # https://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.regionprops_table
+  # Add these components to the 'properties' list, below.
+  properties: ['label','centroid','area', 'perimeter','eccentricity','orientation','axis_major_length','axis_minor_length']
+  # you can add extra properties in the `func_features.py` enum
+  extra_properties: ['convexity']
