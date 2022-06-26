@@ -97,9 +97,15 @@ Legend:
 - #x | #y: #x __or__ #y needs to be completed
 - #x & #y: #x __and__ #y needs to be completed
 
+## License
+This pipeline is under an open-source license **BY-NC** (can be reused, modified, for no commercial purpose, with attribution of the authors when used for publication). **Code Authors: Alice Gros, Clément Caporal, Gesa Loof, Amirhossein Esmaeili, Dominika Guttenova, Louise Dagher**
+
+
 # Tutorial  
   
 ![IMG_0003](https://user-images.githubusercontent.com/15125196/175807730-910af1fc-75f0-4b17-9391-e628a45ed529.PNG)  
+
+![IMG_0004](https://user-images.githubusercontent.com/15125196/175809001-1d9feea0-3564-40b7-ae37-ded15b6e761f.PNG)  
 
 
 The following analysis have been developed: 
@@ -107,6 +113,9 @@ The following analysis have been developed:
     1) A deep learning model has been trained on hand-made labelled bright-field trichoplax movie. The needed input file is a tif file with one channel correspond to the bright-field channel and one channel to the labels (Layer 1, the Trichoplax, Layer 2, the background). This kind of labelling can be done in Napari, before starting the training.
     2) Otsu's method: The code performs automatic thresholding to separate pixels into two classes of  foreground & background. This threshold is determined by by maximizing inter-class variance. A suitable candidate for creating shape masks of microscopic images of cells 
     3) Segmentation using morphsnakes: Finding outer edge of the animal using the morphsnakes algorithm for contour finding by comparing intensity averages inside and outside of a region.
+
+![image](https://user-images.githubusercontent.com/94049435/175808887-5a489a01-8de8-4e63-aec6-fbbe07d8473a.png)
+
 
 
 - **Preprocessing of the wound:** This code extract the wound shape from the Trichoplax mask (given as tif input) and generates a new tif mask only for the wound.
@@ -117,11 +126,13 @@ The following analysis have been developed:
 
 - **Plot generated shape data:** load the two previous csv files (Trichoplax and wound dataframes). It generates examples of analysis: area overtime, convexity, eccentricity, orientation angle, ... 
 
+![image](https://user-images.githubusercontent.com/94049435/175808963-e0287fa3-3fd8-4975-8f00-da5cee2605d8.png)
+
 - **Investigate flows within the Trichoplax: To understand the collective cell movements after laser ablation.**  
 This code generates the velocity fields of pixels within the Trichoplax, from the global displacement of pixels between one timepoint to another. The wanted time window for the analysis (delta t), as well as the index of starting timepoint, the raw image name, folder for saving, should be specified as input. The output is a sequence of png images, that you can afterwhat load in FIJI and convert to gif file. This code could be improved by saving the coordinates of the vectors.  
 ![optical_flowoptical_flow_t50to_t55](https://user-images.githubusercontent.com/15125196/175806591-811e2830-d9a7-4d44-b405-787c8510210f.png)  
 
-- **Tracking of Trichoplax lipid-containing cells:** 
+- **Segmentationn of Trichoplax lipid-containing cells**
 
 [conda]: https://docs.conda.io/en/latest/
 [mamba]: https://mamba.readthedocs.io/en/latest/
