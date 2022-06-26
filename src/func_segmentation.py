@@ -1,27 +1,20 @@
-import math
 import os
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import morphsnakes as ms
-import napari
 import numpy as np
-import pandas as pd
 import scipy.ndimage as nd
-import skimage
 from numpy.typing import ArrayLike
 from scipy import ndimage as ndi
 from scipy.ndimage.morphology import binary_fill_holes
 from skimage import exposure, filters, morphology
-from skimage.draw import ellipse
 from skimage.filters import rank
-from skimage.measure import label, perimeter, regionprops, regionprops_table
-from skimage.morphology import (convex_hull_image, disk, remove_small_holes,
-                                remove_small_objects)
+from skimage.measure import regionprops
+from skimage.morphology import disk, remove_small_holes, remove_small_objects
 from skimage.segmentation import clear_border
-from skimage.transform import rotate
 from tifffile import imread, imwrite
-from yapic.session import Session
+
+from utils import package_installed
 
 
 def segmentation_chanvese(image:ArrayLike,
@@ -66,25 +59,30 @@ def segmentation_chanvese(image:ArrayLike,
     return output_array
 
 def segmentation_yapic(im:ArrayLike,
-                    temp_folder_path:str,
+                    temp_folder_path:Path,
                     model_path:Path,
                     small_object_th:int=1000,
                     small_holes_th:int=200,
                     prediction_th:float=0.2,
                     show_debug:bool=True) -> ArrayLike:
+
+    if package_installed("tensorflow") and package_installed("yapic"):
+        from yapic.session import Session
+
     temp_folder_path = Path(temp_folder_path)
     if not os.path.isdir(temp_folder_path/'input'):
         os.mkdir(temp_folder_path/'input')
     if not os.path.isdir(temp_folder_path/'predict'):
         os.mkdir(temp_folder_path/'predict')
 
+    im = np.array(im)
     mask = np.zeros(im.shape, dtype=bool)
 
-    for i, im in enumerate(im):
+    for i, img in enumerate(im):
         if show_debug:
             print(f'Writing temp tif {i}/{len(im)}')
         # create individual tif for each step
-        imwrite(temp_folder_path/f'input/temp.tif', im)
+        imwrite(temp_folder_path/f'input/temp.tif', img)
 
         # predict the temp tif
         t = Session()
@@ -109,6 +107,8 @@ def segmentation_otsu(im:ArrayLike,
                     removeHoleSize:int=5000,
                     disk_footprint:int=1) -> ArrayLike:
 
+    im = np.array(im)
+
     # Preallocating mask array
     footprint = morphology.footprints.disk(disk_footprint)
     mask = np.zeros(np.shape(im), dtype=bool)
@@ -129,14 +129,15 @@ def segmentation_otsu(im:ArrayLike,
         thresholds = filters.threshold_multiotsu(image)
         regions = np.digitize(image, bins=thresholds)
         label_image = regions
-        
+
         if clearMask:
-        
+
             areas = []
             for region in regionprops(regions):
                 areas.append(region.area)
+
             areas = np.array(areas)
-            
+
             minRemoveSize = np.mean(areas)
             removeHoleSize = np.round(np.min(areas))
 
@@ -145,12 +146,14 @@ def segmentation_otsu(im:ArrayLike,
 
         mask[frame,...] = morphology.remove_small_holes(
             morphology.remove_small_objects(
-                fill, min_size=minRemoveSize,
+                fill, min_size=minRemoveSize),
             removeHoleSize)
 
     return mask
 
 def get_holes_mask(mask:ArrayLike) -> ArrayLike:
+    mask = np.array(mask)
+
     inverted_mask= mask.copy() #copy the original mask
     # inverse the mask. The idea is to extract only the small object (= the wound) in the middle of the image, and to remove everything around.
     inverted_mask[mask==0]=1

@@ -1,10 +1,11 @@
 #!python
 # Necessary imports
-from tifffile import imread, imwrite
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import scipy.ndimage as nd
 from napari import Viewer
-from pathlib import Path
+from tifffile import imread
 
 # You might need to modify the path according to where you saved your dataset
 # Note that the `Path` library will deal with OS dependant path issues

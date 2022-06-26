@@ -1,10 +1,13 @@
-from typing import Any, Dict, List, Iterator, Optional, Sequence, Union, Tuple
-from numpy.typing import ArrayLike
-from pathlib import Path
 import abc
-import numpy as np
+from typing import Any, Dict, Optional
 
-from src.func_segmentation import segmentation_chanvese, segmentation_yapic, segmentation_otsu
+import numpy as np
+from numpy.typing import ArrayLike
+
+from func_segmentation import (segmentation_chanvese, segmentation_otsu,
+                               segmentation_yapic)
+from utils import package_installed
+
 
 class SegmentationInterface(metaclass=abc.ABCMeta):
 
@@ -57,6 +60,11 @@ class ChanVese(SegmentationInterface):
         return self.output
 
 class YAPIC(SegmentationInterface):
+
+    def __init__(self, input: ArrayLike, params: Optional[Dict[str, Any]]) -> None:
+        package_installed("tensorflow")
+        package_installed("yapic")
+        super().__init__(input, params)
 
     def get_segmentation(self, input:Optional[ArrayLike]=None,
                     params:Optional[Dict[str, Any]]=None):

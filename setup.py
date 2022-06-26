@@ -32,4 +32,8 @@ setup(
                       'scikit-image', 'scikit-learn',
                       'tifffile', 'ipython', 'jupyter',
                       'napari', 'morphsnakes', 'einops'],
+    extras_require={
+        'all':  ['tensorflow-gpu', 'yapic']
+    }
+
 )

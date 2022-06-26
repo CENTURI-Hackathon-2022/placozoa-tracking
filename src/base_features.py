@@ -1,14 +1,14 @@
-from typing import Any, Dict, List, Iterator, Optional, Sequence, Union, Tuple
-from numpy.typing import ArrayLike
-from pathlib import Path
 import abc
+from typing import Any, Dict, Optional
+
 import numpy as np
 import pandas as pd
-from skimage.measure import regionprops_table
 import scipy.ndimage as ndi
+from numpy.typing import ArrayLike
+from skimage.measure import regionprops_table
 
-from src.func_features import ExtraProperties
-from src.func_features import convexity
+from func_features import ExtraProperties
+
 
 class FeatureInterface(metaclass=abc.ABCMeta):
 
