@@ -108,6 +108,9 @@ The following analysis have been developed:
     2) Otsu's method: The code performs automatic thresholding to separate pixels into two classes of  foreground & background. This threshold is determined by by maximizing inter-class variance. A suitable candidate for creating shape masks of microscopic images of cells 
     3) Segmentation using morphsnakes: Finding outer edge of the animal using the morphsnakes algorithm for contour finding by comparing intensity averages inside and outside of a region.
 
+![image](https://user-images.githubusercontent.com/94049435/175808887-5a489a01-8de8-4e63-aec6-fbbe07d8473a.png)
+
+
 
 - **Preprocessing of the wound:** This code extract the wound shape from the Trichoplax mask (given as tif input) and generates a new tif mask only for the wound.
 /!\ Running this part is necessary before doing the shape features analysis for the wound. 
@@ -116,6 +119,8 @@ The following analysis have been developed:
 /!\ This part needs to be run twice if you want to analyse the Trichoplax shape and its wound shape; **Don't forget to change mask filename input and dataframe name output ;)**
 
 - **Plot generated shape data:** load the two previous csv files (Trichoplax and wound dataframes). It generates examples of analysis: area overtime, convexity, eccentricity, orientation angle, ... 
+
+![image](https://user-images.githubusercontent.com/94049435/175808963-e0287fa3-3fd8-4975-8f00-da5cee2605d8.png)
 
 - **Investigate flows within the Trichoplax: To understand the collective cell movements after laser ablation.**  
 This code generates the velocity fields of pixels within the Trichoplax, from the global displacement of pixels between one timepoint to another. The wanted time window for the analysis (delta t), as well as the index of starting timepoint, the raw image name, folder for saving, should be specified as input. The output is a sequence of png images, that you can afterwhat load in FIJI and convert to gif file. This code could be improved by saving the coordinates of the vectors.  
