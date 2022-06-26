@@ -104,6 +104,7 @@ def segmentation_yapic(im:ArrayLike,
 
 def segmentation_otsu(im:ArrayLike,
                     smoothingSigma:int=4,
+                    clearMask:bool=True,
                     minRemoveSize:int=10000,
                     removeHoleSize:int=5000,
                     disk_footprint:int=1) -> ArrayLike:
@@ -128,13 +129,23 @@ def segmentation_otsu(im:ArrayLike,
         thresholds = filters.threshold_multiotsu(image)
         regions = np.digitize(image, bins=thresholds)
         label_image = regions
+        
+        if clearMask:
+        
+            areas = []
+            for region in regionprops(regions):
+                areas.append(region.area)
+            areas = np.array(areas)
+            
+            minRemoveSize = np.mean(areas)
+            removeHoleSize = np.round(np.min(areas))
 
         # Fill the holes in the cell morphology and remove small objects/holes from the background
         fill = ndi.binary_fill_holes(label_image)
 
         mask[frame,...] = morphology.remove_small_holes(
             morphology.remove_small_objects(
-                fill, min_size=minRemoveSize),
+                fill, min_size=minRemoveSize,
             removeHoleSize)
 
     return mask
