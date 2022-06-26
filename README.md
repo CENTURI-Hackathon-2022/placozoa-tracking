@@ -103,10 +103,11 @@ Legend:
 
 
 The following analysis have been developed: 
-- **Shape segmentation (contouring the Trichoplax shape or its ablation wound shape):** 3 differents strategies have been investigated.  
-1) A deep learning model has been trained on labelled bright-field trichoplax movie. It generates a tif file of the segmented shape (= binary mask).  
-2) Otsu's method: The code performs automatic thresholding to separate pixels into two classes of  foreground & background. This threshold is determined by by maximizing inter-class variance. A suitable candidate for creating shape masks of microscopic images of cells 
-3)  
+- **Shape segmentation (contouring the Trichoplax shape or its ablation wound shape):** 3 differents strategies have been investigated. They require the original movie as tif as input. They generate a tif file of the segmented shape (= binary mask).  
+    1) A deep learning model has been trained on hand-made labelled bright-field trichoplax movie. The needed input file is a tif file with one channel correspond to the bright-field channel and one channel to the labels (Layer 1, the Trichoplax, Layer 2, the background). This kind of labelling can be done in Napari, before starting the training.
+    2) Otsu's method: The code performs automatic thresholding to separate pixels into two classes of  foreground & background. This threshold is determined by by maximizing inter-class variance. A suitable candidate for creating shape masks of microscopic images of cells 
+    3) Segmentation using morphsnakes: Finding outer edge of the animal using the morphsnakes algorithm for contour finding by comparing intensity averages inside and outside of a region.
+
 
 - **Preprocessing of the wound:** This code extract the wound shape from the Trichoplax mask (given as tif input) and generates a new tif mask only for the wound.
 /!\ Running this part is necessary before doing the shape features analysis for the wound. 
