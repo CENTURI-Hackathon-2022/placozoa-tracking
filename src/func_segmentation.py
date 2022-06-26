@@ -1,17 +1,28 @@
+import math
 import os
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import morphsnakes as ms
+import napari
 import numpy as np
+import pandas as pd
 import scipy.ndimage as nd
+import skimage
 from numpy.typing import ArrayLike
 from scipy import ndimage as ndi
 from scipy.ndimage.morphology import binary_fill_holes
 from skimage import exposure, filters, morphology
+from skimage.draw import ellipse
 from skimage.filters import rank
-from skimage.morphology import disk, remove_small_holes, remove_small_objects
+from skimage.measure import label, perimeter, regionprops, regionprops_table
+from skimage.morphology import (convex_hull_image, disk, remove_small_holes,
+                                remove_small_objects)
+from skimage.segmentation import clear_border
+from skimage.transform import rotate
 from tifffile import imread, imwrite
 from yapic.session import Session
+
 
 def segmentation_chanvese(image:ArrayLike,
                         disk_size:int=4,
@@ -127,3 +138,12 @@ def segmentation_otsu(im:ArrayLike,
             removeHoleSize)
 
     return mask
+
+def get_holes_mask(mask:ArrayLike) -> ArrayLike:
+    inverted_mask= mask.copy() #copy the original mask
+    # inverse the mask. The idea is to extract only the small object (= the wound) in the middle of the image, and to remove everything around.
+    inverted_mask[mask==0]=1
+    inverted_mask[mask==1]=0
+    # remove objects touching the borders.
+    mask_cleared=clear_border(inverted_mask)
+    return mask_cleared

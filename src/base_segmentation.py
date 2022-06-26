@@ -4,7 +4,7 @@ from pathlib import Path
 import abc
 import numpy as np
 
-from src.func_segmentation import segmentation_chanvese, segmentation_yapic
+from src.func_segmentation import segmentation_chanvese, segmentation_yapic, segmentation_otsu
 
 class SegmentationInterface(metaclass=abc.ABCMeta):
 
@@ -16,7 +16,7 @@ class SegmentationInterface(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def get_segmentation(self):  # required
+    def get_segmentation(self) -> ArrayLike:  # required
         """Compute the segmentation of the class"""
         raise NotImplementedError("Not implemented yet.")
 
@@ -64,3 +64,13 @@ class YAPIC(SegmentationInterface):
         params = params if params else self.params
         self.output = segmentation_yapic(input, **params)
         return self.output
+
+class Otsu(SegmentationInterface):
+
+    def get_segmentation(self, input:Optional[ArrayLike]=None,
+                    params:Optional[Dict[str, Any]]=None):
+        input = np.array(input) if input else self.input
+        params = params if params else self.params
+        self.output = segmentation_otsu(input, **params)
+        return self.output
+
