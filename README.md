@@ -101,6 +101,8 @@ Legend:
   
 ![IMG_0003](https://user-images.githubusercontent.com/15125196/175807730-910af1fc-75f0-4b17-9391-e628a45ed529.PNG)  
 
+![IMG_0004](https://user-images.githubusercontent.com/15125196/175809001-1d9feea0-3564-40b7-ae37-ded15b6e761f.PNG)  
+
 
 The following analysis have been developed: 
 - **Shape segmentation (contouring the Trichoplax shape or its ablation wound shape):** 3 differents strategies have been investigated. They require the original movie as tif as input. They generate a tif file of the segmented shape (= binary mask).  
@@ -126,7 +128,7 @@ The following analysis have been developed:
 This code generates the velocity fields of pixels within the Trichoplax, from the global displacement of pixels between one timepoint to another. The wanted time window for the analysis (delta t), as well as the index of starting timepoint, the raw image name, folder for saving, should be specified as input. The output is a sequence of png images, that you can afterwhat load in FIJI and convert to gif file. This code could be improved by saving the coordinates of the vectors.  
 ![optical_flowoptical_flow_t50to_t55](https://user-images.githubusercontent.com/15125196/175806591-811e2830-d9a7-4d44-b405-787c8510210f.png)  
 
-- **Tracking of Trichoplax lipid-containing cells:** 
+- **Segmentationn of Trichoplax lipid-containing cells**
 
 [conda]: https://docs.conda.io/en/latest/
 [mamba]: https://mamba.readthedocs.io/en/latest/
