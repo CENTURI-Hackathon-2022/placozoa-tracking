@@ -159,5 +159,5 @@ def get_holes_mask(mask:ArrayLike) -> ArrayLike:
     inverted_mask[mask==0]=1
     inverted_mask[mask==1]=0
     # remove objects touching the borders.
-    mask_cleared=clear_border(inverted_mask)
+    mask_cleared = clear_border(inverted_mask)
     return mask_cleared

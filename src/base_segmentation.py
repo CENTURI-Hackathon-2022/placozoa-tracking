@@ -24,6 +24,14 @@ class SegmentationInterface(metaclass=abc.ABCMeta):
         raise NotImplementedError("Not implemented yet.")
 
     @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, val):
+        self._name = val
+
+    @property
     def input(self) -> ArrayLike:
         return self._input
 
@@ -52,6 +60,8 @@ class SegmentationInterface(metaclass=abc.ABCMeta):
 
 class ChanVese(SegmentationInterface):
 
+    name = "Chan_Vese"
+
     def get_segmentation(self, input:Optional[ArrayLike]=None,
                     params:Optional[Dict[str, Any]]=None):
         input = np.array(input) if input else self.input
@@ -60,6 +70,8 @@ class ChanVese(SegmentationInterface):
         return self.output
 
 class YAPIC(SegmentationInterface):
+
+    name = "YAPIC"
 
     def __init__(self, input: ArrayLike, params: Optional[Dict[str, Any]]) -> None:
         package_installed("tensorflow")
@@ -74,6 +86,8 @@ class YAPIC(SegmentationInterface):
         return self.output
 
 class Otsu(SegmentationInterface):
+
+    name = "Otsu"
 
     def get_segmentation(self, input:Optional[ArrayLike]=None,
                     params:Optional[Dict[str, Any]]=None):
