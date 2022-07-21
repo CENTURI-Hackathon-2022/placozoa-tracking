@@ -159,7 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 data/
-model/
+models/
 !data/place_holder
 !data/results/place_holder
 !models/place_holder
